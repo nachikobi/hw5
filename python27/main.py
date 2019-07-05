@@ -30,7 +30,17 @@ class Root(webapp2.RequestHandler):
 class Pata(webapp2.RequestHandler):
     def get(self):
         # とりあえずAとBをつなぐだけで返事を作っていますけど、パタタコカシーーになるように自分で直してください！
-        pata = self.request.get("a") + self.request.get("b")
+        pata = ""
+        if len(self.request.get("a")) >= len(self.request.get("b")):
+            for i in range(len(self.request.get("b"))):
+                pata += self.request.get("a")[i] + self.request.get("b")[i]
+            for i in range(len(self.request.get("b")), len(self.request.get("a"))):
+                pata += self.request.get("a")[i]
+        else:
+            for i in range(len(self.request.get("a"))):
+                pata += self.request.get("b")[i] + self.request.get("a")[i]
+            for i in range(len(self.request.get("a")), len(self.request.get("b"))):
+                pata += self.request.get("b")[i]
         self.response.headers['Content-Type'] = 'text/html; charset=UTF-8'
         # テンプレートの内容を埋め込んで、返事を返す。
         self.response.write(pataTmpl.render(pata=pata, request=self.request))
